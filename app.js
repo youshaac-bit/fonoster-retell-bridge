@@ -1,11 +1,13 @@
 const express = require("express");
-const { VoiceServer } = require("@fonoster/sdk");
+const { Voice } = require("@fonoster/sdk");
 
 const app = express();
 app.use(express.json());
 
-const voice = new VoiceServer();
+// In the new SDK, you create a Voice instance this way
+const voice = new Voice();
 
+// The listen function remains the same
 voice.listen(async (req, res) => {
   const retellAgentId = process.env.RETELL_AGENT_ID;
 
@@ -21,9 +23,11 @@ voice.listen(async (req, res) => {
   });
 });
 
-// This is just a health check endpoint for Render
+// Health check endpoint for Render
 app.get("/", (req, res) => {
   res.send("Voice App is running.");
 });
 
-app.listen(3000, () => console.log("Server is running on port 3000!"));
+// We need to use the PORT environment variable provided by Render
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server is running on port ${port}!`));
