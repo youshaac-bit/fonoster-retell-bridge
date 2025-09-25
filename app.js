@@ -1,15 +1,17 @@
+const VoiceServer = require("@fonoster/voice").default;
 const express = require("express");
-const { Voice } = require("@fonoster/sdk");
 
+// This is just a health check endpoint for Render
 const app = express();
-app.use(express.json());
-
-// Correct way to initialize the Voice API
-const voice = new Voice({
-  endpoint: process.env.FONOS_ENDPOINT || "localhost:51901" 
+app.get("/", (req, res) => {
+  res.send("Voice App is running.");
 });
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Server is running on port ${port}!`));
 
-voice.listen(async (req, res) => {
+
+// This is the main Fonoster application logic
+new VoiceServer().listen(async (req, res) => {
   const retellAgentId = process.env.RETELL_AGENT_ID;
 
   if (!retellAgentId) {
@@ -23,11 +25,3 @@ voice.listen(async (req, res) => {
     endpoint: `sip:${retellAgentId}@beta.voice.retellai.com`
   });
 });
-
-// Health check endpoint
-app.get("/", (req, res) => {
-  res.send("Voice App is running.");
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server is running on port ${port}!`));
