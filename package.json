@@ -1,0 +1,10 @@
+{
+  "name": "fonoster-retell-bridge",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": { "start": "node app.js" },
+  "dependencies": {
+    "@fonoster/sdk": "latest",
+    "express": "^4.18.2"
+  }
+}
